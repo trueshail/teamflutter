@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -24,7 +25,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
   final String title;
 
   @override
@@ -33,10 +33,20 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  late ConfettiController confettiController;
+
+  @override
+  void initState() {
+    confettiController = ConfettiController(duration: Duration(seconds: 1));
+    super.initState();
+  }
 
   void _incrementCounter() {
     setState(() {
       _counter++;
+      if ((_counter % 5 == 0)) {
+        confettiController.play();
+      }
     });
   }
 
@@ -102,16 +112,28 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
+          alignment: Alignment.center,
           children: <Widget>[
             const Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            Padding(
+              padding: const EdgeInsets.only(top: 80.0),
+              child: Text(
+                '$_counter',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
             ),
+            Padding(
+                padding: const EdgeInsets.only(top: 80.0),
+                child: ConfettiWidget(
+                  confettiController: confettiController,
+                  blastDirection: 60,
+                  gravity: 0.9,
+                  numberOfParticles: 100,
+                  blastDirectionality: BlastDirectionality.explosive,
+                ))
           ],
         ),
       ),
