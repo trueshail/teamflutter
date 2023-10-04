@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 
@@ -113,16 +114,27 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Stack(
-          alignment: Alignment.center,
+          alignment: Alignment.topCenter,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
             Padding(
               padding: const EdgeInsets.only(top: 80.0),
-              child: Text(
-                '$_counter',
-                style: Theme.of(context).textTheme.headlineMedium,
+              child: Column(
+                children: [
+                  AnimatedFlipCounter(
+                    duration: const Duration(milliseconds: 500),
+                    textStyle: const TextStyle(
+                      fontSize: 48,
+                    ),
+                    value: _counter, // pass in a value like 2014
+                    curve: Curves.easeIn,
+                  ),
+                  AnimatedContainer(
+                    color: Colors.red,
+                    duration: Duration(milliseconds: 300),
+                    width: _counter % 2 == 0 ? 100 : 50,
+                    height: _counter % 2 == 0 ? 100 : 50,
+                  ),
+                ],
               ),
             ),
             Padding(
